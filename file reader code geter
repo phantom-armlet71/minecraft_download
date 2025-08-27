@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload and Show Code</title>
+  <style>
+    #code-output {
+      white-space: pre;
+      background: #f5f5f5;
+      border: 1px solid #ccc;
+      padding: 1em;
+      margin-top: 1em;
+      font-family: monospace;
+      max-width: 100%;
+      overflow-x: auto;
+    }
+    .copy-btn {
+      margin-top: 0.5em;
+      padding: 0.5em 1em;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Upload a File to Show Its Code</h1>
+  <input type="file" id="file-input" />
+  <button class="copy-btn" onclick="copyCode()">Copy Code</button>
+  <div id="code-output"></div>
+
+  <script>
+    document.getElementById('file-input').addEventListener('change', function (event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById('code-output').textContent = e.target.result;
+      };
+      reader.readAsText(file);
+    });
+
+    function copyCode() {
+      const code = document.getElementById('code-output').textContent;
+      navigator.clipboard.writeText(code)
+        .then(() => alert('Code copied to clipboard!'))
+        .catch(() => alert('Failed to copy code.'));
+    }
+  </script>
+</body>
+</html>
